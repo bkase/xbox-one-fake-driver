@@ -18,7 +18,7 @@ First install the [key-injector server](https://github.com/bkase/key-injector)
 Then run:
 
 ```bash
-go get github.com/bkase/xbox
+go get github.com/bkase/xbox-one-fake-driver
 ```
 
 ## To Run
@@ -34,7 +34,7 @@ Then **plug in** your Xbox One controller through the micro-usb port.
 Then run:
 
 ```bash
-cd $GOPATH/src/github.com/bkase/xbox
+cd $GOPATH/src/github.com/bkase/xbox-one-fake-driver
 go run xbox.go
 ```
 
