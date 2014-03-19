@@ -40,3 +40,9 @@ go run xbox.go
 
 You'll need to re-plug the controller before you run the binary, (bug inherited from kylelemons/xbox ).
 
+
+## TODO (for contributors):
+
+* Don't hardcode key controls in source code (load from JSON config or something similar)
+* Remove code unnecessary for the Xbox One controller
+
