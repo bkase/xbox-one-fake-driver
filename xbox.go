@@ -486,7 +486,7 @@ func XBoxOne(controller *usb.Device, in, out usb.Endpoint) {
 			{3, 2, "D-Left", "1"},
 			{3, 3, "D-Right", "2"},
 			{3, 4, "L-Trigger", "g"},
-			{3, 5, "R-Trigger", "c"},
+			{3, 5, "R-Trigger", "9"},
 			{3, 6, "L-Stick", "3"},
 			{3, 7, "R-Stick", "4"},
 		} {
@@ -505,12 +505,36 @@ func XBoxOne(controller *usb.Device, in, out usb.Endpoint) {
 			}
 		}
 
-		if lt > 0 || rt > 0 {
-			log.Println("LT:", lt, "RT:", rt)
+		data[4] = 0
+		data[6] = 0
+		for _, btn := range []struct {
+			idx     int
+			pressed bool
+			name    string
+			key     string
+		}{
+			{4, lt > 512, "LT", "9"},
+			{6, rt > 512, "RT", "c"},
+		} {
+			if btn.pressed {
+				data[btn.idx] = 1
+			}
+			c := data[btn.idx]
+			l := last[btn.idx]
+			if c == l {
+				continue
+			}
+			switch {
+			case c != 0:
+				log.Printf("Button %q pressed: %q", btn.name, btn.key)
+				conn.Write([]byte("d" + btn.key))
+			case l != 0:
+				log.Printf("Button %q released: %q", btn.name, btn.key)
+				conn.Write([]byte("u" + btn.key))
+			}
 		}
 
 		data[8] = 0
-
 		check_for_press := func(isOne bool, idx int, bit uint) int {
 			var val int
 			if isOne {
